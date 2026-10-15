@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Protótipo — Encontrar Assento</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+
+  <div class="phone-frame">
+    <div class="status-bar"><span id="hora">12:30</span><span>100%</span></div>
+
+    <div
+  id="tela1"
+  class="screen active"
+  onclick="selecionarFoto()"
+  role="button"
+  tabindex="0"
+  aria-label="Selecionar uma foto para analisar os assentos"
+>
+<div class="btn-giant" aria-hidden="true">
+  Analisar<br>foto do ônibus
+</div>
+<p class="tagline">
+  Selecione uma foto para procurar lugares aparentemente livres.
+</p>
+
+      <button class="btn-outline" style="margin-top:24px;" onclick="event.stopPropagation(); trocarVoz();">Trocar voz (teste)</button>
+      <p id="voz-atual" class="screen-label" style="margin-top:10px;">Voz: carregando…</p>
+    </div>
+
+    <div id="tela2" class="screen">
+      <div class="radar-wrap">
+        <div class="radar-ring"></div>
+        <div class="radar-ring"></div>
+        <div class="radar-ring"></div>
+        <div class="radar-core"></div>
+      </div>
+      <p class="text-large">Localizando assentos livres</p>
+     <p class="screen-label">
+  Aguarde a análise. O tempo depende da conexão.</p>
+    </div>
+
+   <div id="tela3" class="screen">
+  <p
+    id="resultado-assentos"
+    class="message-card"
+    role="status"
+    aria-live="polite"
+    aria-atomic="true"
+  >
+    Nenhuma imagem analisada.
+  </p>
+
+  <p id="horario-analise" class="screen-label"></p>
+
+  <p class="screen-label" style="margin-top:16px;">
+    Resultado experimental. Confirme a disponibilidade antes de sentar.
+  </p>
+
+  <div style="display:flex;
+  flex-direction:column;
+  gap:14px;
+  margin-top:24px;">
+    <button class="btn-solid" onclick="repetirMensagem()">
+      Ouvir resultado
+    </button>
+
+    <button class="btn-outline" onclick="mudarTela('tela1')">
+      Analisar outra foto
+    </button>
+  </div>
+</div>
+
+  </div>
+   <input
+    id="foto-assentos"
+    type="file"
+    accept="image/*"
+    hidden
+  >
+
+  <script src="./script.js"></script>
+</body>
+</html>
