@@ -1,90 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Protótipo — Encontrar Assento</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="./style.css">
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
+  <title>Mobintec — Encontrar assento</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Versão para ajudar a atualizar arquivos antigos do site. -->
+  <link rel="stylesheet" href="./style.css?v=camera-2">
+  <script src="./script.js?v=camera-2" defer></script>
 </head>
+
 <body>
+  <main class="app">
+    <header class="cabecalho">
+      <span id="hora"></span>
+      <strong>Mobintec</strong>
+    </header>
 
-  <div class="phone-frame">
-    <div class="status-bar"><span id="hora">12:30</span><span>100%</span></div>
+    <h1>Encontrar assento</h1>
 
-    <div
-  id="tela1"
-  class="screen active"
-  onclick="selecionarFoto()"
-  role="button"
-  tabindex="0"
-  aria-label="Selecionar uma foto para analisar os assentos"
->
-<div class="btn-giant" aria-hidden="true">
-  Analisar<br>foto do ônibus
-</div>
-<p class="tagline">
-  Selecione uma foto para procurar lugares aparentemente livres.
-</p>
+    <section id="tela1" class="tela">
+      <button id="iniciar" class="botao-principal" type="button">
+        Iniciar câmera<br>e procurar assento
+      </button>
 
-      <button class="btn-outline" style="margin-top:24px;" onclick="event.stopPropagation(); trocarVoz();">Trocar voz (teste)</button>
-      <p id="voz-atual" class="screen-label" style="margin-top:10px;">Voz: carregando…</p>
-    </div>
+      <p class="instrucao">
+        Aponte a câmera traseira para os assentos.
+        Mantenha o celular parado durante a análise.
+      </p>
 
-    <div id="tela2" class="screen">
-      <div class="radar-wrap">
-        <div class="radar-ring"></div>
-        <div class="radar-ring"></div>
-        <div class="radar-ring"></div>
-        <div class="radar-core"></div>
-      </div>
-      <p class="text-large">Localizando assentos livres</p>
-     <p class="screen-label">
-  Aguarde a análise. O tempo depende da conexão.</p>
-    </div>
+      <button id="trocar-voz" class="botao" type="button">
+        Trocar voz
+      </button>
 
-   <div id="tela3" class="screen">
-  <p
-    id="resultado-assentos"
-    class="message-card"
-    role="status"
-    aria-live="polite"
-    aria-atomic="true"
-  >
-    Nenhuma imagem analisada.
-  </p>
+      <p id="voz-atual" class="secundario">
+        Voz: português do dispositivo
+      </p>
+    </section>
 
-  <p id="horario-analise" class="screen-label"></p>
+    <section id="camera-area" hidden>
+      <video
+        id="video"
+        autoplay
+        muted
+        playsinline
+        aria-label="Imagem da câmera"
+      ></video>
 
-  <p class="screen-label" style="margin-top:16px;">
-    Resultado experimental. Confirme a disponibilidade antes de sentar.
-  </p>
+      <p class="secundario">
+        A câmera permanece ligada.
+        A identificação é feita por capturas automáticas.
+      </p>
 
-  <div style="display:flex;
-  flex-direction:column;
-  gap:14px;
-  margin-top:24px;">
-    <button class="btn-solid" onclick="repetirMensagem()">
-      Ouvir resultado
-    </button>
+      <button id="parar" class="botao parar" type="button">
+        Parar câmera e busca
+      </button>
+    </section>
 
-    <button class="btn-outline" onclick="mudarTela('tela1')">
-      Analisar outra foto
-    </button>
-  </div>
-</div>
+    <section id="tela2" class="tela" hidden>
+      <div class="radar" aria-hidden="true"></div>
+      <h2>Analisando os assentos</h2>
+      <p class="secundario">
+        Aguarde. O servidor pode demorar para responder.
+      </p>
+    </section>
 
-  </div>
-   <input
-    id="foto-assentos"
-    type="file"
-    accept="image/*"
-    hidden
-  >
+    <section id="tela3" class="tela" hidden>
+      <h2>Resultado</h2>
 
-  <script src="./script.js"></script>
+      <p id="resultado" class="cartao">
+        Nenhuma análise realizada.
+      </p>
+
+      <p id="horario" class="secundario"></p>
+
+      <button id="repetir" class="botao" type="button" disabled>
+        Ouvir resultado
+      </button>
+
+      <button id="voltar" class="botao" type="button" hidden>
+        Voltar ao início
+      </button>
+    </section>
+
+    <p
+      id="status"
+      class="estado"
+      role="status"
+      aria-live="polite"
+      aria-atomic="true"
+    >
+      Câmera desligada.
+    </p>
+
+    <aside class="aviso">
+      Protótipo experimental. Pode confundir encostos com lugares livres.
+      Esquerda e direita se referem à imagem da câmera.
+      Confirme a disponibilidade com ajuda antes de sentar.
+      Não use como guia de deslocamento.
+    </aside>
+
+    <canvas id="canvas" hidden aria-hidden="true"></canvas>
+  </main>
 </body>
 </html>
