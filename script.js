@@ -146,6 +146,38 @@
           "Não foi possível carregar as vozes.";
       }
     }
+function mensagemParaVoz(texto) {
+  const mensagem = String(texto || "").trim();
+
+  if (
+    mensagem.startsWith(
+      "Candidato a assento livre mais próximo pela posição na imagem:"
+    )
+  ) {
+    if (mensagem.includes("à direita da imagem")) {
+      return "Possível assento livre à direita da imagem. Confirme antes de sentar.";
+    }
+
+    if (mensagem.includes("à esquerda da imagem")) {
+      return "Possível assento livre à esquerda da imagem. Confirme antes de sentar.";
+    }
+
+    if (mensagem.includes("na região central da imagem")) {
+      return "Possível assento livre no centro da imagem. Confirme antes de sentar.";
+    }
+  }
+
+  if (
+    mensagem.startsWith(
+      "Não identifiquei um candidato a assento livre"
+    )
+  ) {
+    return "Nenhum assento livre identificado nesta imagem.";
+  }
+
+  // Mantém mensagens de conexão, permissão e outros avisos.
+  return mensagem;
+}
 
     function falar(texto) {
       try {
@@ -158,9 +190,14 @@
 
         cancelarVoz();
 
-        const fala = new SpeechSynthesisUtterance(texto);
-        fala.lang = "pt-BR";
-        fala.rate = 1;
+      const fala = new SpeechSynthesisUtterance(
+  mensagemParaVoz(texto)
+);
+
+fala.lang = "pt-BR";
+fala.rate = 0.95;
+fala.volume = 1;
+fala.pitch = 1;
 
         if (voz) {
           fala.voice = voz;
@@ -223,6 +260,8 @@
 
       mudarTela("tela1");
       atualizarStatus("Câmera e busca desligadas.");
+      falar("Iniciando câmera.");
+
 
       if (anunciar) {
         elementos.iniciar.focus();
